@@ -59,6 +59,8 @@ def returnFunction(x: Any) -> Any:
     x[1].reverse()
     return x[1]
 
+# The while function takes four arguments: a list of two elements (index, and an empty list), a boolean check function
+# an update function and a return function. 
 def nSquares(n: int) -> [int]:
     return myWhile([1, []], (lambda x: x[0] <= n), (lambda x : updateFunction(x)), (lambda x: returnFunction(x)))
 

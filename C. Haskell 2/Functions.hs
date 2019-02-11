@@ -149,5 +149,5 @@ nPrimes n =
   while (2, [])
         (\(index, list) -> length list < n)
         (\(index, list) -> (index + 1, if null[p | p <- list, index `mod` p == 0]
-            then (index : list) else drop 1 (index : list)))
+          then (index : list) else []))
         (reverse . snd)
