@@ -3,7 +3,8 @@ myZipWith f [] _ = []
 myZipWith f _ [] = []
 myZipWith f (x:xs) (y:ys) = f x y : myZipWith f xs ys
 
--- The order matters when there are multiple cases.
+-- The order matters when there are multiple cases because of the way Haskell
+-- function definitions fall through.
 
 
 
@@ -25,6 +26,7 @@ myFoldr f y (x:xs) = f x (myFoldr f y xs)
 -- before completing the previous element and so on.
 -- Value is first element to be processed
 
+-- myFoldr' requires myFlip in order to get the correct signature to use myFoldl
 myFoldr' :: (a -> b -> b) -> b -> [a] -> b
 myFoldr' f y xs = myFoldl (myFlip f) y $ reverse xs
 
@@ -37,6 +39,7 @@ myFlip f = g
 myCycle :: [a] -> [a]
 myCycle xs = xs' where xs' = xs ++ xs'
 
+-- xs ++ (xs ++ (xs ++ (xs ++ ...)))
 -- Haskell's laziness keeps it from becoming an infinite loop, hence
 -- no need for a base case. It will keep repeating as it is needed.
 
@@ -142,6 +145,7 @@ nFibs n =
         (\(index, list) -> (index + 1, (list!!0 + list!!1) : list))
         (reverse . snd)
 
+-- not a great implementation because it relies on an unnecessary else function
 nPrimes :: Int -> [Int]
 nPrimes n =
   while (2, [])
@@ -149,10 +153,3 @@ nPrimes n =
         (\(index, list) -> (index + 1, if null[p | p <- list, index `mod` p == 0]
             then (index : list) else drop 1 (index : list)))
         (reverse . snd)
-
--- nPrimes :: Int -> [Int]
--- nPrimes n =
---   while (2, [])
---         (\(index, list) -> length list < n)
---         (\(index, list) -> (index + 1, ))
---         (reverse . snd)
