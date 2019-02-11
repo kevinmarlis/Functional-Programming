@@ -1,9 +1,9 @@
 myZipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-myZipWith _ [] [] = []
+myZipWith f [] _ = []
+myZipWith f _ [] = []
 myZipWith f (x:xs) (y:ys) = f x y : myZipWith f xs ys
--- myZipWith _ _ _ = []
 
--- The order matters when using underscores but otherwise it doesn't.
+-- The order matters when there are multiple cases.
 
 
 
