@@ -14,7 +14,6 @@ myFoldl f y (x:xs) = myFoldl f (f y x) xs
 
 -- This is tail recursive because it works from left to right with no need to
 -- return to finish processing.
--- Value is the last element to be processed in the list.
 
 
 
@@ -24,7 +23,6 @@ myFoldr f y (x:xs) = f x (myFoldr f y xs)
 
 -- This is not tail recursive because it has to return from the last element
 -- before completing the previous element and so on.
--- Value is first element to be processed
 
 -- myFoldr' requires myFlip in order to get the correct signature to use myFoldl
 myFoldr' :: (a -> b -> b) -> b -> [a] -> b
