@@ -45,18 +45,20 @@ myCycle xs = xs' where xs' = xs ++ xs'
 -- because of laziness. It only generates what is needed.
 
 -- Step by step evaluation of take 5 cyc12:
--- > take 5 cyc12 - generate the first element of cyc12 to get:
--- > take 5 (1 ++ xs) - apply the recursive take case to get:
--- > 1 : take 4 (xs) - generate the next element of cyc12 to get:
--- > 1 : take 4 (2 ++ xs) - apply the recursive take case to get:
--- > 1 : 2 : take 3 (xs) - generate the next element of cyc12 to get:
--- > 1 : 2 : take 3 (1 ++ xs) - apply the recursive take case to get:
--- > 1 : 2 : 1 : take 2 (xs) - generate the next element of cyc12 to get:
--- > 1 : 2 : 1 : take 2 (2 ++ xs) - apply the recursive take case to get:
--- > 1 : 2 : 1 : 2 : take 1 (xs) - generate the next element of cyc12 to get:
--- > 1 : 2 : 1 : 2 : take 1 (1 ++ xs) - apply the recursive take case to get:
--- > 1 : 2 : 1 : 2 : 1 take 0 (xs) - apply the base take case to get:
--- > 1 : 2 : 1 : 2 : 1 : [] - Nothing left to evaluate
+-- > take 5 cyc12
+-- > take 5 (cyc12 ++ myCycle cyc 12)
+-- > take 5 ([1,2] ++ myCycle [1,2])
+-- > take 5 (1 : ([2] ++ myCycle [1,2]))
+-- > 1 : take 4 ([2] ++ myCycle [1,2])
+-- > 1 : 2 : take 3 ([] ++ myCycle [1,2])
+-- > 1 : 2 : take 3 ([1, 2] ++ myCycle [1,2])
+-- > 1 : 2 : take 3 (1 : ([2] ++ myCycle [1,2]))
+-- > 1 : 2 : 3 : take 2 ([2] ++ myCycle [1,2])
+-- > 1 : 2 : 1 : take 2 (2 : [] ++ myCycle [1,2])
+-- > 1 : 2 : 1 : 2 : take 1 ([1, 2] ++ myCycle [1,2])
+-- > 1 : 2 : 1 : 2 : take 1 (1 : ([2] ++ myCycle [1,2]))
+-- > 1 : 2 : 1 : 2 : 1 : take 0 ([2] ++ myCycle [1,2]))
+-- > 1 : 2 : 1 : 2 : 1 : []
 
 
 
@@ -92,11 +94,11 @@ functionPairsF f xs = foldl (\xs x -> xs ++ [(x, f x)]) [] xs
 
 
 
-while :: a -> (a -> Bool) -> (a -> a) -> (a -> b) -> b
-while x f1 f2 f3 =
-  if (f1 x)
-      then while (f2 x) f1 f2 f3
-      else (f3 x)
+while :: state -> (state -> Bool) -> (state -> state) -> (state -> result) -> result
+while state checkFunc updateFunc resultsFunc =
+  if (checkFunc state)
+      then while (updateFunc state) checkFunc updateFunc resultsFunc
+      else (resultsFunc state)
 
 -- The while function is tail recursive because it doesn't need to return to get the
 -- output, it just updates the state variable as it recurses.
@@ -105,7 +107,7 @@ nSquares :: Int -> [Int]
 nSquares n =
   while (1, [])
         (\(index, _) -> index <= n)
-        (\(index, list) -> (index + 1, index^2 : list))
+        (\(index, squares) -> (index + 1, index^2 : squares))
         (reverse . snd)
 
 -- The state in nSquares is a tuple containing an index and the resulting list.
@@ -137,17 +139,18 @@ myWhileFoldl f y xs =
         (head . snd)
 
 nFibs :: Int -> [Int]
-nFibs n =
-  while (2, [1,1])
-        (\(index, _) -> index < n)
-        (\(index, list) -> (index + 1, (list!!0 + list!!1) : list))
-        (reverse . snd)
+nFibs n | n == 0 = []
+        | n == 1 = [1]
+        | otherwise =
+            while (2, [1,1])
+                  (\(index, _) -> index < n)
+                  (\(index, fibs) -> (index + 1, (fibs!!0 + fibs!!1) : fibs))
+                  (reverse . snd)
 
--- not a great implementation because it relies on an unnecessary else function
+-- Update primes function to use filters to properly do the Sieve as posted on
+-- CSNS forum
 nPrimes :: Int -> [Int]
-nPrimes n =
-  while (2, [])
-        (\(index, list) -> length list < n)
-        (\(index, list) -> (index + 1, if null[p | p <- list, index `mod` p == 0]
-          then (index : list) else []))
-        (reverse . snd)
+nPrimes n = while (2:[3,5..], 0, [])
+              (\(_, pCount, _) -> n > pCount)
+              (\(p:nums, pCount, primes) -> (filter (\x -> x `mod` p /= 0) nums, pCount + 1, p : primes ))
+              (\(_, _, primes) -> reverse primes)
