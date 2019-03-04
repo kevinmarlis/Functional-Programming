@@ -1,0 +1,39 @@
+from itertools import cycle
+
+# Pattern matching is used within the single function definition. If the argument
+# is of type String, it will be converted to an int, otherwise a recursive call
+# will be made within a list comprehension for each "digit" within the Int argument
+# that has been converted to a string.
+def toDigits(n: Union[str, int]) -> [int]:
+    match n is str in n:
+      return int(n)
+    else:
+      return [toDigits(d) for d in str(n)]
+
+# |*> pipes multiple arguments, here the list of ints and the cycling list of 1s
+# and 2s to map, which has the partial $ sign because it only contains the * function.
+# The result of the mapping is then passed to list.
+def doubleEveryOther(n: [int]) -> [int]:
+  return (n, cycle([1,2])) |*> map$(*) |> list
+
+# The list of ints is passed to the partial reduce function which will sum up
+# what is passed in to it.
+def sumDigits(n: [int]) -> int:
+  return n |> reduce$(+)
+
+# In this case, Coconut function composition works left to right (although piping
+# can be turned around to work the other way).
+def checkSum(n: int) -> int:
+    return toDigits(n) |> doubleEveryOther |> sumDigits
+
+# Simple check to see if the final sum is divisible by 10
+def isValid(n: int):
+    return checkSum(n) % 10 == 0
+
+# List of potential credit card numbers is passed to the partial function map
+# which only contains the isValid function. The result is passed to list and
+# finally to print
+def testCC() -> [bool]:
+    [1234567890123456, 1234567890123452] |> map$(isValid) |> list |> print
+
+testCC()
