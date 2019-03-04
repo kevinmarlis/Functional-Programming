@@ -44,3 +44,4 @@ def testCC() -> [bool]:
     print(pvector(map(isValid, [1234567890123456, 1234567890123452])))
 
 testCC()
+print(pvector()[0])

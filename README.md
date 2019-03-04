@@ -1,11 +1,11 @@
 # Functional-Programming
 CS 5035 Functional Programming notes and projects
 
-#### A. Python 
+#### A. Python
 
 This folder contains notes on Python typing.
 
-#### B. Haskell 
+#### B. Haskell
 
 This folder contains Haskell and Python versions disproving Goldbach's other conjecture.
 PythonVersionA attempts is Haskell inspired, but deals with infinite lists in an inelegant way - by stopping them at 6000.
@@ -18,4 +18,8 @@ This folder contains implementations of Haskell functions and their counterparts
 
 #### D. Decorators
 
-This folder contains Haskell implementations (translated from Python) of returning the nth Fibonacci number. 
+This folder contains Haskell implementations (translated from Python) of returning the nth Fibonacci number.
+
+#### E. Functional Programming in Python
+
+This folder contains implementations of a credit card number validation algorithm in Haskell, Python (using Pyrsistent and Toolz), and Coconut.
