@@ -15,3 +15,7 @@ The two Lists files compare how infinite lists work in both Haskell and Python.
 #### C. Haskell 2
 
 This folder contains implementations of Haskell functions and their counterparts in Python.
+
+#### D. Decorators
+
+This folder contains Haskell implementations (translated from Python) of returning the nth Fibonacci number. 
