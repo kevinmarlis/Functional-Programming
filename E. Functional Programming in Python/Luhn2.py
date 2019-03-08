@@ -1,5 +1,5 @@
 from pyrsistent import pvector
-from toolz import interleave, accumulate, last, concat
+from toolz import interleave, accumulate, last, concat, compose
 from operator import add
 from pyrsistent.typing import PVector
 
@@ -30,10 +30,10 @@ def doubleEveryOther(ints: PVector[int]) -> PVector[int]:
 def sumDigits(ints: PVector[int]) -> int:
     return last(accumulate(add, concat(map(lambda c: toDigits(c), ints))))
 
-# The int is passed to toDigits and the resulting list is passed to doubleEveryOther,
-# and the resulting list is passed to sumDigits.
+# Uses Toolz compose function to pass int to toDigits and the resulting list is
+# passed to doubleEveryOther, and the resulting list is passed to sumDigits. 
 def checkSum(int: int) -> int:
-    return sumDigits(doubleEveryOther(toDigits(int)))
+    return compose(sumDigits, doubleEveryOther, toDigits) (int)
 
 # Checks if the summed value is divisible by 10.
 def isValid(int: int) -> bool:
@@ -42,6 +42,6 @@ def isValid(int: int) -> bool:
 # An immutable PVector is created from mapping the isValid function to the list
 # of potential credit card numbers.
 def testCC() -> PVector[bool]:
-    print(pvector(map(isValid, [1234567890123456, 1234567890123452])))
+    compose(print, pvector, map) (isValid, [1234567890123456, 1234567890123452])
 
 testCC()
