@@ -44,11 +44,11 @@ class Show:
 
     # Overload the | operator for short-circuit
     def __or__(self, other):
-        return lambda *args, **kw: self.func(*args, **kw) if self.func(*args, **kw) else other.func(*args, **kw)
+        return lambda *args, **kw: self.func(*args, **kw) if self.func(*args, **kw) else other(*args, **kw)
 
     # Overload the // operator for bind
     def __floordiv__(self, other):
-        return lambda *args, **kw: other.func(self.func(*args, **kw)) if self.func(*args, **kw) else None
+        return lambda *args, **kw: other(self.func(*args, **kw)) if self.func(*args, **kw) else None
 
     def __call__(self, *args, **kw):
         return self.func(*args, **kw)
@@ -89,7 +89,7 @@ def favoriteShow(person) -> Optional[str]:
 
 # Example showing short circuiting or
 def pickShow(person) -> Optional[str]:
-    return (showWithName | showForYear)(person)
+    return (favoriteShow | (showForYear | showWithName))(person)
 
 # Example showing bind operator
 @Show
@@ -99,7 +99,7 @@ def loveShows(str) -> Optional[str]:
 def showBuilder(person) -> Optional[str]:
     return (favoriteShow // loveShows)(person)
 
-print("PickShow: ", pickShow(cam))
+print("PickShow: ", pickShow(deb))
 print("Show Builder: ", showBuilder(amy))
 
 """
