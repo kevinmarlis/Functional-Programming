@@ -23,3 +23,9 @@ This folder contains Haskell implementations (translated from Python) of returni
 #### E. Functional Programming in Python
 
 This folder contains implementations of a credit card number validation algorithm in Haskell, Python (using Pyrsistent and Toolz), and Coconut.
+
+#### E. Amuse-Bouche
+
+This folder contains notes on Haskell code from the 2011 talk by Mark Lentczner
+(https://www.youtube.com/watch?v=b9FagOVqxmI&feature=youtu.be), and some custom
+operator implementations. There is also corresponding code in Python. 
