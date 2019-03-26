@@ -1,0 +1,154 @@
+ITERATIONS
+doubleAndSum_1a:
+  while loop using accumulator and incrementing index, maintaining both in a tuple.
+
+doubleAndSum_1b:
+  simple for loop with accumulator...very common approach
+
+doubleAndSum_1c:
+  recursive implementation using helper function, counting up from 0. Like
+  doubleAndSum_1a but recursive instead of while loop
+
+doubleAndSum_1d:
+  reduce implementation. reduce(func, seq, initial value)
+
+doubleAndSum_1e:
+  comprehension and sum
+
+///
+WINNER: doubleAndSum_1e because it combines good traits (concise, clean, easy to
+  understand). None of these options are very abstracted, however.
+///
+
+TWO AT A TIME
+doubleAndSum_2a1:
+  while loop moving two elements at a time. Each iteration of the while loop takes
+  care of the "singled" and "doubled" elements.
+
+doubleAndSum_2a2:
+  Like the previous version but uses xs mutably. The star operator unpacks the
+  first two items from xs, performs the appropriate operation on them and then
+  continues to the next iteration of the while loop using the remaining elements
+  in xs until the while loop exits.
+
+doubleAndSum_2b:
+  Same as doubleAndSum_2a1, but uses for loop instead of while loop. Range jumps
+  by 2.
+
+doubleAndSum_2c1:
+  Recursive implementation which takes a list and an accumulator initialized to 0.
+  Can be thought of as acting mutably on the list, although it doesn't.
+
+doubleAndSum_2c2:
+  Returns the result of calling the helper function on the unpacked elements of
+  the list. The helper function splits them into first, second, and rest parameters.
+  The appropriate operations are performed and the helper is called recursively on
+  the remaining starred parameters.
+
+doubleAndSum_2d:
+  Similar to doubleAndSum_1d, but with a helper function instead of a lambda in
+  reduce because of combining the two iterations in one.
+
+doubleAndSum_2e:
+  Similar to doubleAndSum_1e, but with the additional if statement to account for
+  odd length lists.
+
+///
+WINNER: doubleAndSum_2a2 because it is clever, and easy to understand if you
+  get the star operator. Pattern matching (kind of)!
+///
+
+ENUMERATIONS:
+doubleAndSum_3a:
+  While loop takes the first in list of enumerates, applies appropriate operation,
+  drops the first element from list of enumerates and proceeds until list is
+  exhausted.
+
+doubleAndSum_3b:
+  Clean for loop, using tuple from enumerate for all operations.
+
+doubleAndSum_3c:
+  Helper function takes list of enumerates and accumulator where base case is the
+  empty list. Performs similarly to doubleAndSum_3a by dropping first of list after
+  processing, but does so recursively rather than with a while loop.
+
+doubleAndSum_3d:
+  Similar to previous reduce implementations.
+
+doubleAndSum_3e1:
+  Simple, clean comprehension
+
+doubleAndSum_3e2:
+  Comprehension that zips 1 and 2 with element from xs, multiplying the zip together
+  and calling sum.
+
+///
+WINNER: doubleAndSum_3e1 because it avoids clunky looking loops and is very
+  clean and concise. Elegant without losing readability.
+///
+
+MAP:
+doubleAndSum_4a1:
+  Cycle generates 1s and 2s. Map applies the function mul to the cycle and the input
+  list.
+
+doubleAndSum_4a2:
+  Map applies the function applicator function apply to the cycling list of functions
+  (ident and double) and the input list.
+
+doubleAndSum_4b1:
+  Performs the same map function as in doubleAndSum_4a1 but uses reduce and add
+  instead of sum. Sum is almost always preferred because it has been optimized
+  because of its ubiquity.
+
+doubleAndSum_4b2:
+  Performs the same map function as in doubleAndSum_4a2 but uses reduce and add
+  instead of sum. Sum is almost always preferred because it has been optimized
+  because of its ubiquity.
+
+///
+WINNER: doubleAndSum_4a1 because it is a nice combination of abstraction using the
+  sum and map functions without losing elegance. Can you tell I like calling sum
+  on a comprehension?
+///
+
+FRAMEWORK:
+doubleAndSum_5:
+  Uses the helper transformAndReduce. The framework of using the helper function
+  increases abstraction, and therefore potential reuse, however it feels
+  unnecessary here, obfuscating the task and lengthening the code, when there are
+  other more suitable varieties of implementation.
+
+
+Thoughts:
+Abstraction, flexibility, and elegance are inherent within the creation of software.
+Modern software is an instantiation of abstraction - otherwise all software would
+consist of an endless list of if/else statements. Abstraction leads to flexibility
+which reduces the amount of repetition within code. This serves many practical
+functions, including keeping code from getting bloated, ease of debugging and tracing,
+and maintaining an easy to follow thru-line. Often times this leads to elegant code,
+but has a high potential for being overly elegant or abstracted while losing
+readability. If time were no constraint, it could be very easy to lose sight of the
+objective. There is a fine line between exploration of a better way and a waste of time.
+Software developers need to maintain that balance.
+
+A framework and a library differ when it comes to control flow. A library contains
+useful tools that can be applied to some code whereas a framework provides the
+scaffolding for the developer to fill in. A framework is like a canvas - you can
+paint many different things upon the canvas but the entire skeleton is still there.
+A library, in this metaphor, could be the different tools used to apply the paint
+to the canvas, from different sized brushes to a palette knife. Frameworks can be
+incredibly useful tools as an established structure provides ease and clarity - if
+they are appropriate to your task. If they aren't, they could be too restrictive.
+doubleAndSum_5 uses the transformAndReduce framework. The reduce, map, and apply
+functions are structurally formed, but on its own, the code does nothing. Once
+doubleAndSum_5 passes in what it whats to reduceBy, its list of transformFns, and
+the list it wants to apply it all to, the framework takes care of everything. It
+abstracts away how it all works into a separate function.
+
+The while function in Haskell is a framework because it provides a generic structure
+for specifics to be plugged into. The code for the while framework doesn't change,
+but its application can. The user doesn't need to understand how the framework
+works, just what input is needed. In this case, most control constructs and operators are
+implicit frameworks. They are generic structures that enhance abstraction, flexibility,
+and elegance.

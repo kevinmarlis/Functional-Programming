@@ -149,6 +149,9 @@ myfMap :: (a -> b) -> Maybe a -> Maybe b
 myfMap f (Just a) = Just (f a)
 myfMap f Nothing = Nothing
 
+
+-- fmap implementation for List:
+
 myfMapL :: (a -> b) -> [a] -> [b]
 myfMapL f [] = []
 myfMapL f xs = map f xs
