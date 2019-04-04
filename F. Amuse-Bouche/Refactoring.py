@@ -125,12 +125,15 @@ def doubleAndSum_2c2(xs: List[int]) -> int:
     """
 
     def doubleAndSum_2c2_aux(x0: int=0, x1: int=0, *xs_aux: List[int]) -> int:
+        print(xs_aux)
         total = x0 + 2*x1
         if len(xs_aux) > 0:
             total += doubleAndSum_2c2_aux(*xs_aux)
         return total
 
     return doubleAndSum_2c2_aux(*xs)
+
+print(doubleAndSum_2c2([1,2,3,4]))
 
 def doubleAndSum_2d(xs: List[int]) -> int:
     """
@@ -304,19 +307,19 @@ doubleAndSums = [doubleAndSum_1a, doubleAndSum_1b, doubleAndSum_1c, doubleAndSum
 
 
 
-if __name__ == '__main__':
-    from random import choice, randint
-
-    numlists = [[randint(0, 100) for _ in range(listSize)] for listSize in range(21)]
-    for numlist in numlists:
-        selectedDAndS = choice(doubleAndSums)
-        referenceAnswer = selectedDAndS(numlist)
-        print( f'\n{selectedDAndS.__name__}({numlist}) = {referenceAnswer}' )
-        otherAnswers = [dAndS(numlist) for dAndS in doubleAndSums if dAndS is not selectedDAndS]
-        if all( referenceAnswer == eachAnswer for eachAnswer in otherAnswers ):
-            print('All the same.')
-        else:
-            discrepancies = [f'{dAndS.__name__}({numlist}) = {dAndS(numlist)}' for dAndS in doubleAndSums
-                                                                               if dAndS(numlist) != referenceAnswer]
-            for discrepancy in discrepancies:
-                print(discrepancy)
+# if __name__ == '__main__':
+#     from random import choice, randint
+#
+#     numlists = [[randint(0, 100) for _ in range(listSize)] for listSize in range(21)]
+#     for numlist in numlists:
+#         selectedDAndS = choice(doubleAndSums)
+#         referenceAnswer = selectedDAndS(numlist)
+#         print( f'\n{selectedDAndS.__name__}({numlist}) = {referenceAnswer}' )
+#         otherAnswers = [dAndS(numlist) for dAndS in doubleAndSums if dAndS is not selectedDAndS]
+#         if all( referenceAnswer == eachAnswer for eachAnswer in otherAnswers ):
+#             print('All the same.')
+#         else:
+#             discrepancies = [f'{dAndS.__name__}({numlist}) = {dAndS(numlist)}' for dAndS in doubleAndSums
+#                                                                                if dAndS(numlist) != referenceAnswer]
+#             for discrepancy in discrepancies:
+#                 print(discrepancy)
